@@ -1,5 +1,5 @@
-const web3Instance = require('../common/web3/web3').web3Instance
-const account = require('../common/web3/web3').account
+const web3Instance = require('../common/txBuilder/web3').web3Instance
+const account = require('../common/txBuilder/web3').account
 const msg = require('../common/message')
 const promiseRet = require('../common/promiseRet')
 const dbServer = require('../api/dbInterface')

@@ -1,10 +1,11 @@
 const decimal = require('decimal.js')
+const promiseRet = require('../../common/promiseRet')
+const msg = require('../../common/message')
+
 const contractConfig = require('../../config/ETH/contractConfig')
 const accountConfig = require('../../config/ETH/accountInfo')
 const supportedTokensERC20 = require('../../config/ETH/supportedTokens')
-const promiseRet = require('../../common/promiseRet')
-const msg = require('../../common/message')
-const dbServer = require('../../api/dbInterface')
+
 const web3Instance = require('./web3').web3Instance
 const account = require('./web3').account
 
