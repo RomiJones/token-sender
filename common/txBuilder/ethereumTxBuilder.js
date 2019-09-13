@@ -9,7 +9,7 @@ const supportedTokensERC20 = require('../../config/ETH/supportedTokens')
 const web3Instance = require('./web3').web3Instance
 const account = require('./web3').account
 
-let pushSendingTask = require('../txSender/txSender').pushSendingTask;
+let txSender = require('../txSender/txSender');
 
 const abi = contractConfig.erc20ABI;
 const walletAddress = accountConfig.accountAddress;
@@ -131,7 +131,9 @@ async function buildSignedTx(rawTransaction, to, amount, resolve) {
 
     console.log(Date.now(), ': set this tx nonce = ', currentNonceETH);
     currentNonceETH += 1;
-    pushSendingTask({
+    txSender.pushSendingTask({
+        senderType:"eth",
+        from: accountConfig.accountAddress,
         to: to,
         amount: amount,
         txHash: txHash,

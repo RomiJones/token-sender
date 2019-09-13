@@ -2,65 +2,88 @@ const web3Instance = require('../txBuilder/web3').web3Instance;
 const dbServer = require('../../api/dbInterface');
 const accountConfig = require('../../config/ETH/accountInfo');
 
-let transferTasks = []
+let instanceNKNWallet = require('./nknWallet').instanceNKNWallet;
 
-let sending = false
-setInterval(async function(){
-    if(sending) {
-        return
+let allTasks = [];
+let isSending = false;
+
+setInterval(async function() {
+    if(isSending) {
+        return;
     }
-    sending = true
+    isSending = true;
 
-    let transfer = transferTasks.shift();
-    if(!transfer) {
-        sending = false
-        return
+    let task = allTasks.shift();
+    if(!task) {
+        isSending = false;
+        return;
     }
 
-    console.log('start transfer: ', transfer.txHash)
-    console.log('remain transfer count: ', transferTasks.length)
+    console.log(`start transfer [type : ${task.senderType}]: ${task.txHash}`);
+    if(task.senderType == "eth") {
+        web3Instance.eth.sendSignedTransaction(transfer.rawTransaction)
+            .on('error', async err => {
+                await notifyFailed(task);
+                console.log("----------send etheruem token over----------")
+            }).then(async function() {
+                await notifySuccess(task);
+                console.log("----------send etheruem token over----------")
+            }).catch(function(err) {
+                console.log('throw err ', err, ' ', task.txHash)
+            })
+    } else if(task.senderType == "nkn") {
+        let txSignedNKN = task.rawTransaction;
+        let ok = false;
+        try {
+            let res = await instanceNKNWallet.sendTransaction(txSignedNKN);
+            ok = true;
+        } catch(ex) {
+            console.log('throw exception ', ex, ' ', task.txHash)
+        }
 
-    web3Instance.eth.sendSignedTransaction(transfer.rawTransaction)
-        .on('error', async err => {
-            console.log('erc 20 transfer failed: ', err, ' ', transfer.txHash)
-
-            let time = Date.now() / 1000
-            let notifyErrInfo = {
-                "timestamp": Math.floor(time),
-                "txType": "eth",
-                "addressFrom": accountConfig.accountAddress,
-                "addressTo": transfer.to,
-                "value": parseFloat(transfer.amount),
-                "txId": transfer.txHash
-            }
-
-            console.log("notify tx error ", notifyErrInfo)
-            let notifyRet = await dbServer.ErrorNotify(notifyErrInfo)
-            console.log("notify tx error ret " + `${notifyRet}`)
-            console.log("----------transfer over----------")
-        }).then(async function() {
-            console.log(`send erc 20 transfer success ${transfer.txHash}`)
-
-            let time = Date.now() / 1000
-            let notifySuccessInfo = {
-                addressFrom: accountConfig.accountAddress,
-                addressTo: transfer.to,
-                value:  parseFloat(transfer.amount),
-                txId: transfer.txHash,
-                blockTimestamp:  Math.floor(time),
-            }
-            console.log("notify tx success ", notifySuccessInfo)
-            let notifyRet = await dbServer.TransferNotify(notifySuccessInfo)
-            console.log("notify tx success ret " + `${notifyRet}`)
-            console.log("----------transfer over----------")
-        }).catch(function(err) {
-            console.log('throw err ', err, ' ', transfer.txHash)
-        })
-    sending = false
+        if(!ok) {
+            await notifyFailed(task);
+        } else {
+            await notifySuccess(task);
+        }
+        console.log("----------send nkn mainnet token over----------")
+    }
+    console.log('remain transfer count: ', allTasks.length);
+    isSending = false
 }, 500);
 
+async function notifySuccess(taskInfo) {
+    let time = Date.now() / 1000;
+    let notifySuccessInfo = {
+        "blockTimestamp":  Math.floor(time),
+        "txType": taskInfo.senderType,
+        "addressFrom": taskInfo.from,
+        "addressTo": taskInfo.to,
+        "value":  parseFloat(taskInfo.amount),
+        "txId": taskInfo.txHash
+    }
+    console.log("notify tx success ", notifySuccessInfo)
+    let notifyRet = await dbServer.TransferNotify(notifySuccessInfo)
+    console.log("notify tx success ret " + `${notifyRet}`)
+}
+
+async function notifyFailed(taskInfo) {
+    let time = Date.now() / 1000;
+    let notifyErrInfo = {
+        "timestamp": Math.floor(time),
+        "txType": taskInfo.senderType,
+        "addressFrom": taskInfo.from,
+        "addressTo": taskInfo.to,
+        "value": parseFloat(taskInfo.amount),
+        "txId": taskInfo.txHash
+    }
+    console.log("notify tx error ", notifyErrInfo)
+    let notifyRet = await dbServer.ErrorNotify(notifyErrInfo)
+    console.log("notify tx error ret " + `${notifyRet}`)
+}
+
 function pushSendingTask(transfer) {
-  transferTasks.push(transfer)
+    allTasks.push(transfer)
 }
 
 module.exports = {
