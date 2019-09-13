@@ -1,6 +1,6 @@
 module.exports = {
   apps : [{
-    name: 'nkn-swap-tNKN-to-ERC20-token-sender',
+    name: 'token-sender',
     script: './server/run.js',
 
     // Options reference: https://pm2.io/doc/en/runtime/reference/ecosystem-file/

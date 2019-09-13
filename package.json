@@ -1,5 +1,5 @@
 {
-  "name": "nkn-swap-tNKN-to-ERC20-token-sender",
+  "name": "token-sender",
   "version": "1.0.0",
   "private": true,
   "scripts": {
