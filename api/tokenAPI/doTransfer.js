@@ -1,7 +1,7 @@
 let router = require('express').Router();
 let uri = require('../apiNamespace').DB_API.DO_TRANSFER.uri;
-let buildEthereumTx = require('../../common/txBuilder/txBuilder').buildEthereumTx;
-let buildNKNMainnetTx = require('../../common/txBuilder/txBuilder').buildNKNMainnetTx;
+let buildEthereumTx = require('../../common/txBuilder/ethereumTxBuilder').buildEthereumTx;
+let buildNKNMainnetTx = require('../../common/txBuilder/nknMainnetTxBuilder').buildNKNMainnetTx;
 
 let msg = require('../../common/message');
 let supportedTokensERC20 = require("../../config/ETH/supportedTokens");
@@ -42,7 +42,7 @@ async function Action(req, res) {
             .catch(err=> {
                 //should use try catch
                 console.log(`transfer ${amount} ${tokenSymbol} to ${toAddrr} failed: ${err}`)
-                return err
+                return err;
             });
     } else {
         console.log({Error: 'token symbol not supported', OrgData: req.body})
