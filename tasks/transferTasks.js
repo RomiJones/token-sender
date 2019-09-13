@@ -3,17 +3,7 @@ const account = require('../common/web3/web3').account
 const msg = require('../common/message')
 const promiseRet = require('../common/promiseRet')
 const dbServer = require('../api/dbInterface')
-const accountConfig = require('../config/accountInfo')
-
-let currentNonce = 0
-web3Instance.eth.getTransactionCount(accountConfig.accountAddress, 'pending')
-  .then(count=>{
-    currentNonce = count
-    console.log('start nonce: currentNonce = ', count)
-  })
-  .catch(_=>{
-    currentNonce = null
-  })
+const accountConfig = require('../config/ETH/accountInfo')
 
 let transferTasks = []
 
@@ -76,61 +66,7 @@ function pushTransferTask(transfer) {
   transferTasks.push(transfer)
 }
 
-let txBuilding = false
-async function buildTransferTask(rawTransaction, to, amount, resolve) {
-  if(txBuilding) {
-    setTimeout(_=> {
-      buildTransferTask(rawTransaction, to, amount, resolve)
-    }, 300 + Math.floor(100 * Math.random()));
-    return;
-  }
-  txBuilding = true
-
-  if(null === currentNonce) {
-    web3Instance.eth.getTransactionCount(accountConfig.accountAddress, 'pending')
-      .then(count=>{
-        currentNonce = count
-      })
-      .catch(e =>{
-          currentNonce = null;
-          resolve(promiseRet.Error(msg.codes.CAN_NOT_MAKE_NONCE, `erc 20 transfer failed`, e));
-          txBuilding = false;
-          return;
-      });
-  }
-
-  rawTransaction.nonce = currentNonce
-
-  let signedTx = await account.signTransaction(rawTransaction)
-    .catch(e=>{
-      console.log(`erc 20 transfer sign failed err: `, e)
-      return promiseRet.Error(
-        msg.codes.ERC20_TRANSFER_FAILED,
-        `erc 20 transfer failed`,
-        e
-      )
-    })
-
-  if(msg.IsMessage(signedTx)) {
-    txBuilding = false
-    return signedTx
-  }
-
-  let txHash = web3Instance.utils.sha3(signedTx.rawTransaction)
-
-  console.log(Date.now(), ': current nonce = ', currentNonce)
-  currentNonce += 1
-  pushTransferTask({
-    to: to,
-    amount: amount,
-    txHash: txHash,
-    rawTransaction: signedTx.rawTransaction
-  })
-
-  resolve(txHash)
-  txBuilding = false
-}
-
 module.exports = {
-  buildTransferTask
+//  buildTransferTask,
+  pushTransferTask
 }

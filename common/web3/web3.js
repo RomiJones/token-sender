@@ -9,7 +9,7 @@ if(process.env.NODE_ENV === "production") {
 
 let Web3 = require('web3');
 
-const accountConfig = require('../../config/accountInfo');
+const accountConfig = require('../../config/ETH/accountInfo');
 const OPTIONS = {
     defaultBlock :"latest",
     transactionConfirmationBlocks: 2,
