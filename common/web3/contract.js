@@ -1,8 +1,8 @@
 const decimal = require('decimal.js')
 
-const contractConfig = require('../../config/contractConfig')
-const accountConfig = require('../../config/accountInfo')
-const supportedTokens = require('../../config/supportedTokens')
+const contractConfig = require('../../config/ETH/contractConfig')
+const accountConfig = require('../../config/ETH/accountInfo')
+const supportedTokensERC20 = require('../../config/ETH/supportedTokens')
 
 const promiseRet = require('../../common/promiseRet')
 const msg = require('../../common/message')
@@ -44,7 +44,7 @@ async function TransferToken(tokenSymbol, to, amount) {
           "gasPrice":gasPrice
       }
   } else {
-      let tokenDetail = supportedTokens.getToken(tokenSymbol);
+      let tokenDetail = supportedTokensERC20.getToken(tokenSymbol);
       let contract = new web3Instance.eth.Contract(
           abi,
           tokenDetail.contractAddr,
