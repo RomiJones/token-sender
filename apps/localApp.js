@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cors())
 
 let allRouters = [
-  require('../api/ethAPI/sendErc20'),
+  require('../api/tokenAPI/doTransfer'),
   require('../api/dbAPI/txNotify'),
 ]
 
