@@ -4,7 +4,7 @@ const msg = require('../../common/message')
 
 let instanceNKNWallet = require('./nknWallet').instanceNKNWallet;
 
-let pushTransferTask = require('../../tasks/transferTasks').pushTransferTask;
+let pushSendingTask = require('../txSender/txSender').pushSendingTask;
 
 const txFee = 0.0;
 async function buildNKNMainnetTx(tokenSymbol, to, amount) {

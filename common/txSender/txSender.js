@@ -1,14 +1,11 @@
-const web3Instance = require('../common/txBuilder/web3').web3Instance
-const account = require('../common/txBuilder/web3').account
-const msg = require('../common/message')
-const promiseRet = require('../common/promiseRet')
-const dbServer = require('../api/dbInterface')
-const accountConfig = require('../config/ETH/accountInfo')
+const web3Instance = require('../txBuilder/web3').web3Instance;
+const dbServer = require('../../api/dbInterface');
+const accountConfig = require('../../config/ETH/accountInfo');
 
 let transferTasks = []
 
 let sending = false
-setInterval(async _=> {
+setInterval(async function(){
     if(sending) {
         return
     }
@@ -41,7 +38,7 @@ setInterval(async _=> {
             let notifyRet = await dbServer.ErrorNotify(notifyErrInfo)
             console.log("notify tx error ret " + `${notifyRet}`)
             console.log("----------transfer over----------")
-        }).then(async _=> {
+        }).then(async function() {
             console.log(`send erc 20 transfer success ${transfer.txHash}`)
 
             let time = Date.now() / 1000
@@ -56,17 +53,16 @@ setInterval(async _=> {
             let notifyRet = await dbServer.TransferNotify(notifySuccessInfo)
             console.log("notify tx success ret " + `${notifyRet}`)
             console.log("----------transfer over----------")
-        }).catch(err => {
+        }).catch(function(err) {
             console.log('throw err ', err, ' ', transfer.txHash)
         })
     sending = false
 }, 500);
 
-function pushTransferTask(transfer) {
+function pushSendingTask(transfer) {
   transferTasks.push(transfer)
 }
 
 module.exports = {
-//  buildTransferTask,
-  pushTransferTask
+  pushSendingTask
 }
