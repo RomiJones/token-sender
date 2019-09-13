@@ -5,14 +5,7 @@ let msg = require('../../common/message');
 let supportedTokensERC20 = require("../../config/ETH/supportedTokens");
 const { check, validationResult } = require('express-validator/check');
 
-
 const ACCESS_KEY = '55ef6100e7cac696648a78688f664f014836b03a261873f4ff78701745e6f09a'
-
-function isSupportedBySender(tokenSymbol) {
-    return (tokenSymbol == "NKN-MAINNET" ||
-            tokenSymbol == "ETH" ||
-            supportedTokensERC20.getToken(tokenSymbol));
-}
 
 async function Action(req, res) {
     console.log('receive a request!');
@@ -35,19 +28,22 @@ async function Action(req, res) {
         return;
     }
 
-    if(!isSupportedBySender(tokenSymbol)) {
+    let txRet = null;
+    if(tokenSymbol == "NKN-MAINNET") {
+        txRet = null;
+    } else if(tokenSymbol == "ETH" || supportedTokensERC20.getToken(tokenSymbol)){
+        txRet = await TransferToken(tokenSymbol, toAddrr, amount)
+            .catch(err=> {
+                //should use try catch
+                console.log(`transfer ${amount} ${tokenSymbol} to ${toAddrr} failed: ${err}`)
+                return err
+            });
+    } else {
         console.log({Error: 'token symbol not supported', OrgData: req.body})
         let result = msg.Create(msg.codes.TOKEN_SYMBOL_NOT_SUPPORTED, {Error: 'token symbol not supported', OrgData: req.body})
         res.status(400).json(result.toPlainObject())
         return;
     }
-
-    let txRet = await TransferToken(tokenSymbol, toAddrr, amount)
-        .catch(err=> {
-            //should use try catch
-            console.log(`transfer ${amount} ${tokenSymbol} to ${toAddrr} failed: ${err}`)
-            return err
-        })
 
     if(msg.IsSuccess(txRet)) {
         res.json({result: {txId: txRet.msg.Content}});
