@@ -2,7 +2,7 @@ const web3Instance = require('../txBuilder/web3').web3Instance;
 const dbServer = require('../../api/dbInterface');
 const accountConfig = require('../../config/ETH/accountInfo');
 
-let instanceNKNWallet = require('./nknWallet').instanceNKNWallet;
+let instanceNKNWallet = require('../txBuilder/nknWallet').instanceNKNWallet;
 
 let allTasks = [];
 let isSending = false;
@@ -36,6 +36,7 @@ setInterval(async function() {
         let ok = false;
         try {
             let res = await instanceNKNWallet.sendTransaction(txSignedNKN);
+            console.log(res);
             ok = true;
         } catch(ex) {
             console.log('throw exception ', ex, ' ', task.txHash)
@@ -47,6 +48,8 @@ setInterval(async function() {
             await notifySuccess(task);
         }
         console.log("----------send nkn mainnet token over----------")
+    } else {
+        console.log("------------------unkown sender type-------------------");
     }
     console.log('remain transfer count: ', allTasks.length);
     isSending = false

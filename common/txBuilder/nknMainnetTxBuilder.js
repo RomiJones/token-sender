@@ -14,7 +14,7 @@ async function buildNKNMainnetTx(tokenSymbol, to, amount) {
         let txHash = txnSigned.hash;
 
         txSender.pushSendingTask({
-            senderType:"NKN",
+            senderType:"nkn",
             from:instanceNKNWallet.address,
             to: to,
             amount: amount,
