@@ -141,7 +141,12 @@ async function buildTransferTask(rawTransaction, to, amount, resolve) {
     txBuilding = false
 }
 
+async function buildNKNMainnetTx() {
+
+}
+
 module.exports = {
-    buildEthereumTx
+    buildEthereumTx,
+    buildNKNMainnetTx
 }
 

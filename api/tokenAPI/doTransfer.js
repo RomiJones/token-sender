@@ -1,6 +1,8 @@
 let router = require('express').Router();
 let uri = require('../apiNamespace').DB_API.DO_TRANSFER.uri;
-let buildEthereumTx = require('../../common/web3/txBuilder').buildEthereumTx;
+let buildEthereumTx = require('../../common/txBuilder/txBuilder').buildEthereumTx;
+let buildNKNMainnetTx = require('../../common/txBuilder/txBuilder').buildNKNMainnetTx;
+
 let msg = require('../../common/message');
 let supportedTokensERC20 = require("../../config/ETH/supportedTokens");
 const { check, validationResult } = require('express-validator/check');
@@ -30,7 +32,11 @@ async function Action(req, res) {
 
     let txRet = null;
     if(tokenSymbol == "NKN-MAINNET") {
-        txRet = null;
+        txRet = await buildNKNMainnetTx(tokenSymbol, toAddrr, amount)
+            .catch(function(ex) {
+                console.log(`transfer ${amount} ${tokenSymbol} to ${toAddrr} failed: ${ex}`)
+                return ex;
+            });
     } else if(tokenSymbol == "ETH" || supportedTokensERC20.getToken(tokenSymbol)){
         txRet = await buildEthereumTx(tokenSymbol, toAddrr, amount)
             .catch(err=> {
