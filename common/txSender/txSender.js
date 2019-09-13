@@ -36,7 +36,7 @@ setInterval(async function() {
         let ok = false;
         try {
             let res = await instanceNKNWallet.sendTransaction(txSignedNKN);
-            console.log(res);
+//            console.log(res);
             ok = true;
         } catch(ex) {
             console.log('throw exception ', ex, ' ', task.txHash)

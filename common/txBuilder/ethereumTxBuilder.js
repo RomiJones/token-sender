@@ -77,7 +77,7 @@ async function buildEthereumTx(tokenSymbol, to, amount) {
   return promiseRet.Success(txHash)
 }
 
-let currentNonceETH = 0
+let currentNonceETH = 0;
 web3Instance.eth.getTransactionCount(accountConfig.accountAddress, 'pending')
     .then(count=>{
         currentNonceETH = count

@@ -6,6 +6,16 @@ let instanceNKNWallet = require('./nknWallet').instanceNKNWallet;
 let txSender = require('../txSender/txSender');
 
 const txFee = 0.0;
+
+
+let currentNonceNKN = 0;
+instanceNKNWallet.getNonce().then(function(data){
+    currentNonceNKN = data;
+    console.log('start nonce: currentNonceNKN = ', data)
+}).catch(function(){
+    currentNonceNKN = null;
+});
+
 async function buildNKNMainnetTx(tokenSymbol, to, amount) {
     let inputInfo = `[buildNKNMainnetTx (tokenSymbol=${tokenSymbol}, to=${to}, amount=${amount})]`;
     let txnSigned = null;
