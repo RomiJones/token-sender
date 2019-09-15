@@ -15,7 +15,7 @@ if(process.env.NODE_ENV === "production") {
             contractAddr:"0x18be1e39D4F628F1034Ab531d9EE3Ac4364260d0",
             decimals:18
         },{
-            symbol:"NKN",
+            symbol:"NKN-ERC20",
             contractAddr:"0x5cf04716ba20127f1e2297addcf4b5035000c9eb",
             decimals:18
         }

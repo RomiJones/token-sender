@@ -59,7 +59,8 @@ async function notifySuccess(taskInfo) {
     let time = Date.now() / 1000;
     let notifySuccessInfo = {
         "blockTimestamp":  Math.floor(time),
-        "txType": taskInfo.senderType,
+//        "txType": taskInfo.senderType,
+        "tokenSymbol": taskInfo.tokenSymbol,
         "addressFrom": taskInfo.from,
         "addressTo": taskInfo.to,
         "value":  parseFloat(taskInfo.amount),
@@ -74,7 +75,8 @@ async function notifyFailed(taskInfo) {
     let time = Date.now() / 1000;
     let notifyErrInfo = {
         "timestamp": Math.floor(time),
-        "txType": taskInfo.senderType,
+//        "txType": taskInfo.senderType,
+        "tokenSymbol": taskInfo.tokenSymbol,
         "addressFrom": taskInfo.from,
         "addressTo": taskInfo.to,
         "value": parseFloat(taskInfo.amount),
@@ -85,8 +87,8 @@ async function notifyFailed(taskInfo) {
     console.log("notify tx error ret " + `${notifyRet}`)
 }
 
-function pushSendingTask(transfer) {
-    allTasks.push(transfer)
+function pushSendingTask(newTask) {
+    allTasks.push(newTask)
 }
 
 module.exports = {

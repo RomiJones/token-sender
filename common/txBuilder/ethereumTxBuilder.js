@@ -67,7 +67,7 @@ async function buildEthereumTx(tokenSymbol, to, amount) {
   }
 
   let txHash = await new Promise(r=> {
-      buildSignedTx(rawTransaction, to, amount, r)
+      buildSignedTx(tokenSymbol, rawTransaction, to, amount, r)
   })
 
   if(msg.IsMessage(txHash)) {
@@ -88,10 +88,10 @@ web3Instance.eth.getTransactionCount(accountConfig.accountAddress, 'pending')
     })
 
 let txBuilding = false;
-async function buildSignedTx(rawTransaction, to, amount, resolve) {
+async function buildSignedTx(tokenSymbol, rawTransaction, to, amount, resolve) {
     if(txBuilding) {
         setTimeout(_=> {
-            buildSignedTx(rawTransaction, to, amount, resolve)
+            buildSignedTx(tokenSymbol, rawTransaction, to, amount, resolve)
         }, 300 + Math.floor(100 * Math.random()));
         return;
     }
@@ -133,6 +133,7 @@ async function buildSignedTx(rawTransaction, to, amount, resolve) {
     currentNonceETH += 1;
     txSender.pushSendingTask({
         senderType:"eth",
+        tokenSymbol:tokenSymbol,
         from: accountConfig.accountAddress,
         to: to,
         amount: amount,

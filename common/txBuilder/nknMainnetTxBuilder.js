@@ -25,6 +25,7 @@ async function buildNKNMainnetTx(tokenSymbol, to, amount) {
 
         txSender.pushSendingTask({
             senderType:"nkn",
+            tokenSymbol:tokenSymbol,
             from:instanceNKNWallet.address,
             to: to,
             amount: amount,

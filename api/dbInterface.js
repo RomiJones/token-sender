@@ -72,7 +72,7 @@ function buildApiResult(response, apiName, networkErrInfo) {
 }
 
 async function TransferNotify(notifyInfo) {
-  let notifyResult = await axiosPost(`monitor/transactions`, notifyInfo, {"nkn-swap": "asdf"})
+  let notifyResult = await axiosPost(`monitor/transactions`, notifyInfo, {"nkn-swap": "token-sender-by-zs"})
 
   console.log("notify result:")
   console.log(notifyResult)
@@ -81,7 +81,7 @@ async function TransferNotify(notifyInfo) {
 }
 
 async function ErrorNotify(notifyInfo) {
-  let notifyResult = await axiosPost(`monitor/transactions_fail`, notifyInfo, {"nkn-swap": "asdf"})
+  let notifyResult = await axiosPost(`monitor/transactions_fail`, notifyInfo, {"nkn-swap": "token-sender-by-zs"})
 
   return buildApiResult(notifyResult, 'error notify', `ErrorNotify(notifyInfo=${notifyInfo})`)
 }
