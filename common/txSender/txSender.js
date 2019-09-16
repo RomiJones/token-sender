@@ -58,7 +58,7 @@ setInterval(async function() {
 async function notifySuccess(taskInfo) {
     let time = Date.now() / 1000;
     let notifySuccessInfo = {
-        "blockTimestamp":  Math.floor(time),
+        "timestamp":  Math.floor(time),
 //        "txType": taskInfo.senderType,
         "tokenSymbol": taskInfo.tokenSymbol,
         "addressFrom": taskInfo.from,
