@@ -8,9 +8,9 @@ let txSender = require('../txSender/txSender');
 const txFee = 0.0;
 
 
-let currentNonceNKN = 0;
-instanceNKNWallet.getNonce().then(function(data){
-    currentNonceNKN = data;
+let currentNonceNKN = null;
+instanceNKNWallet.getNonce().then(function(data) {
+//    currentNonceNKN = data;
     console.log('start nonce: currentNonceNKN = ', data)
 }).catch(function(){
     currentNonceNKN = null;
@@ -18,9 +18,19 @@ instanceNKNWallet.getNonce().then(function(data){
 
 async function buildNKNMainnetTx(tokenSymbol, to, amount) {
     let inputInfo = `[buildNKNMainnetTx (tokenSymbol=${tokenSymbol}, to=${to}, amount=${amount})]`;
+    if(currentNonceNKN == null) {
+        try {
+            currentNonceNKN = await instanceNKNWallet.getNonce();
+        } catch(e) {
+            currentNonceNKN = null;
+            return promiseRet.Error(msg.codes.CAN_NOT_MAKE_NONCE, `nkn transfer failed`, e);
+        }
+    }
+
     let txnSigned = null;
     try {
-        txnSigned = await instanceNKNWallet.transferTo(to, amount, {fee:txFee, buildOnly:true});
+        console.log(Date.now(), ': set this nkn tx nonce = ', currentNonceNKN);
+        txnSigned = await instanceNKNWallet.transferTo(to, amount, {nonce:currentNonceNKN, fee:txFee, buildOnly:true});
         let txHash = txnSigned.hash;
 
         txSender.pushSendingTask({
@@ -31,8 +41,8 @@ async function buildNKNMainnetTx(tokenSymbol, to, amount) {
             amount: amount,
             txHash: txHash,
             rawTransaction: txnSigned
-        })
-
+        });
+        currentNonceNKN = currentNonceNKN + 1;
         return promiseRet.Success(txHash);
     } catch (ex) {
         console.log(ex);

@@ -20,7 +20,7 @@
     "http-errors": "~1.6.2",
     "moment": "^2.23.0",
     "morgan": "^1.9.1",
-    "nkn-wallet": "^0.4.4",
+    "nkn-wallet": "^0.4.6",
     "queue": "^5.0.0",
     "web3": "^1.0.0-beta.37"
   }

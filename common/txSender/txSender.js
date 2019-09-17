@@ -59,7 +59,6 @@ async function notifySuccess(taskInfo) {
     let time = Date.now() / 1000;
     let notifySuccessInfo = {
         "timestamp":  Math.floor(time),
-//        "txType": taskInfo.senderType,
         "tokenSymbol": taskInfo.tokenSymbol,
         "addressFrom": taskInfo.from,
         "addressTo": taskInfo.to,
@@ -75,7 +74,6 @@ async function notifyFailed(taskInfo) {
     let time = Date.now() / 1000;
     let notifyErrInfo = {
         "timestamp": Math.floor(time),
-//        "txType": taskInfo.senderType,
         "tokenSymbol": taskInfo.tokenSymbol,
         "addressFrom": taskInfo.from,
         "addressTo": taskInfo.to,

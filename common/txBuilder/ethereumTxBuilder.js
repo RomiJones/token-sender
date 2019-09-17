@@ -77,7 +77,7 @@ async function buildEthereumTx(tokenSymbol, to, amount) {
   return promiseRet.Success(txHash)
 }
 
-let currentNonceETH = 0;
+let currentNonceETH = null;
 web3Instance.eth.getTransactionCount(accountConfig.accountAddress, 'pending')
     .then(count=>{
         currentNonceETH = count
@@ -98,20 +98,18 @@ async function buildSignedTx(tokenSymbol, rawTransaction, to, amount, resolve) {
     txBuilding = true
 
     if(null === currentNonceETH) {
-        web3Instance.eth.getTransactionCount(accountConfig.accountAddress, 'pending')
-            .then(count=>{
-                currentNonceETH = count
-            })
-            .catch(e =>{
-                currentNonceETH = null;
-                resolve(promiseRet.Error(msg.codes.CAN_NOT_MAKE_NONCE, `erc 20 transfer failed`, e));
-                txBuilding = false;
-                return;
-            });
+        try {
+            currentNonceETH = await web3Instance.eth.getTransactionCount(accountConfig.accountAddress, 'pending');
+        } catch(e) {
+            currentNonceETH = null;
+            resolve(promiseRet.Error(msg.codes.CAN_NOT_MAKE_NONCE, `erc 20 transfer failed`, e));
+            txBuilding = false;
+            return;
+        };
     }
 
-    rawTransaction.nonce = currentNonceETH
-
+    console.log(Date.now(), ': set this ethereum tx nonce = ', currentNonceETH);
+    rawTransaction.nonce = currentNonceETH;
     let signedTx = await account.signTransaction(rawTransaction)
         .catch(e=>{
             console.log(`erc 20 transfer sign failed err: `, e)
@@ -126,10 +124,8 @@ async function buildSignedTx(tokenSymbol, rawTransaction, to, amount, resolve) {
         txBuilding = false
         return signedTx
     }
-
     let txHash = web3Instance.utils.sha3(signedTx.rawTransaction)
 
-    console.log(Date.now(), ': set this tx nonce = ', currentNonceETH);
     currentNonceETH += 1;
     txSender.pushSendingTask({
         senderType:"eth",
