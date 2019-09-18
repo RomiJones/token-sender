@@ -21,7 +21,7 @@ setInterval(async function() {
 
     console.log(`start transfer [type : ${task.senderType}]: ${task.txHash}`);
     if(task.senderType == "eth") {
-        web3Instance.eth.sendSignedTransaction(transfer.rawTransaction)
+        web3Instance.eth.sendSignedTransaction(task.rawTransaction)
             .on('error', async err => {
                 await notifyFailed(task);
                 console.log("----------send etheruem token over----------")
