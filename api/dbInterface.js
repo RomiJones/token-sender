@@ -12,7 +12,7 @@ if(process.env.NODE_ENV === "production") {
     serverUrl = 'http://10.146.0.3:15230';
 }
 
-decimal.set({ precision: 9 });
+decimal.set({ precision: 30 });
 async function axiosGet(uri) {
   let ret =  await axios.get(`${serverUrl}/${uri}`)
     .catch(err => {
