@@ -5,7 +5,7 @@ const msg = require('../../common/message')
 let instanceNKNWallet = require('./nknWallet').instanceNKNWallet;
 let txSender = require('../txSender/txSender');
 
-const txFee = 0.0;
+const txFee = 0.000001;
 
 
 let currentNonceNKN = null;

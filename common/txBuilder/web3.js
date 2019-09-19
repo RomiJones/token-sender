@@ -2,9 +2,9 @@ let infuraProviderUrl = null;
 if(process.env.NODE_ENV === "production") {
     infuraProviderUrl = 'https://mainnet.infura.io/v3/5fd35273805248e988f3019aae2402e0'
 } else if(process.env.NODE_ENV === "development") {
-    infuraProviderUrl = 'http://35.198.236.251:62335';
+    infuraProviderUrl = 'https://mainnet.infura.io/v3/5fd35273805248e988f3019aae2402e0'
 } else {
-    infuraProviderUrl = 'http://35.198.236.251:62335';
+    infuraProviderUrl = 'https://mainnet.infura.io/v3/5fd35273805248e988f3019aae2402e0'
 }
 
 let Web3 = require('web3');
