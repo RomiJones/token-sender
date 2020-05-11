@@ -2,9 +2,9 @@ let infuraProviderUrl = null;
 if(process.env.NODE_ENV === "production") {
     infuraProviderUrl = 'https://mainnet.infura.io/v3/5fd35273805248e988f3019aae2402e0'
 } else if(process.env.NODE_ENV === "development") {
-    infuraProviderUrl = 'https://mainnet.infura.io/v3/5fd35273805248e988f3019aae2402e0'
+    infuraProviderUrl = 'http://ethapigeth.amous.io'
 } else {
-    infuraProviderUrl = 'https://mainnet.infura.io/v3/5fd35273805248e988f3019aae2402e0'
+    infuraProviderUrl = 'http://ethapigeth.amous.io'
 }
 
 let Web3 = require('web3');

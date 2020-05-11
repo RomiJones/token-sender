@@ -53,7 +53,7 @@ setInterval(async function() {
     }
     console.log('remain transfer count: ', allTasks.length);
     isSending = false
-}, 500);
+}, 600);
 
 async function notifySuccess(taskInfo) {
     let time = Date.now() / 1000;

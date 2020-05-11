@@ -18,6 +18,14 @@ if(process.env.NODE_ENV === "production") {
             symbol:"NKN-ERC20",
             contractAddr:"0x5cf04716ba20127f1e2297addcf4b5035000c9eb",
             decimals:18
+        },{
+            symbol:"USDT-ERC20",
+            contractAddr:"0xdac17f958d2ee523a2206206994597c13d831ec7",
+            decimals:6
+        },{
+            symbol:"OP-ERC20",
+            contractAddr:"0x2ff9c84987b713302a054a4435c19d479407d3db",
+            decimals:18
         }
     ]
 } else if(process.env.NODE_ENV === "development") {
@@ -26,6 +34,14 @@ if(process.env.NODE_ENV === "production") {
             symbol:"IFOOD",
             contractAddr:"0xf9698aD246086064F4C09df83b56Dc9460600CdE",
             decimals:18
+        },{
+            symbol:"USDT-ERC20",
+            contractAddr:"0xfa298BDF0BDFfFD2Dd9Fa605EED8D920f778EC7b",
+            decimals:6
+        },{
+            symbol:"OP-ERC20",
+            contractAddr:"0x102b14b6c1c53e4520d8b6eb22DB469527EDdCDd",
+            decimals:18
         }
     ]
 } else {
@@ -33,6 +49,14 @@ if(process.env.NODE_ENV === "production") {
         {
             symbol:"IFOOD",
             contractAddr:"0xf9698aD246086064F4C09df83b56Dc9460600CdE",
+            decimals:18
+        },{
+            symbol:"USDT-ERC20",
+            contractAddr:"0xfa298BDF0BDFfFD2Dd9Fa605EED8D920f778EC7b",
+            decimals:6
+        },{
+            symbol:"OP-ERC20",
+            contractAddr:"0x102b14b6c1c53e4520d8b6eb22DB469527EDdCDd",
             decimals:18
         }
     ];

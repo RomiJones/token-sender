@@ -5,11 +5,11 @@ let msgCodes = require('../common/message').codes
 
 let serverUrl = null;
 if(process.env.NODE_ENV === "production") {
-    serverUrl = 'http://10.138.0.5:6443';
+    serverUrl = 'http://127.0.0.1:18080';
 } else if(process.env.NODE_ENV === "development"){
-    serverUrl = 'http://10.146.0.3:15230';
+    serverUrl = 'http://127.0.0.1:18080';
 } else {
-    serverUrl = 'http://10.146.0.3:15230';
+    serverUrl = 'http://127.0.0.1:18080';
 }
 
 decimal.set({ precision: 30 });
@@ -72,7 +72,7 @@ function buildApiResult(response, apiName, networkErrInfo) {
 }
 
 async function TransferNotify(notifyInfo) {
-  let notifyResult = await axiosPost(`monitor/transactions`, notifyInfo, {"nkn-swap": "asdf"})
+  let notifyResult = await axiosPost(`monitor/tx/success`, notifyInfo, {"nkn-swap": "asdf"})
 
   console.log("notify result:")
   console.log(notifyResult)
@@ -81,7 +81,7 @@ async function TransferNotify(notifyInfo) {
 }
 
 async function ErrorNotify(notifyInfo) {
-  let notifyResult = await axiosPost(`monitor/transactions_fail`, notifyInfo, {"nkn-swap": "asdf"})
+  let notifyResult = await axiosPost(`monitor/tx/fail`, notifyInfo, {"nkn-swap": "asdf"})
 
   return buildApiResult(notifyResult, 'error notify', `ErrorNotify(notifyInfo=${notifyInfo})`)
 }
