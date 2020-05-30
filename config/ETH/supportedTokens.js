@@ -36,7 +36,7 @@ if(process.env.NODE_ENV === "production") {
             decimals:18
         },{
             symbol:"USDT-ERC20",
-            contractAddr:"0xfa298BDF0BDFfFD2Dd9Fa605EED8D920f778EC7b",
+            contractAddr:"0xa8618B875a26da5CD11C6c7969BE46259b96fC1E",
             decimals:6
         },{
             symbol:"OP-ERC20",
@@ -52,7 +52,7 @@ if(process.env.NODE_ENV === "production") {
             decimals:18
         },{
             symbol:"USDT-ERC20",
-            contractAddr:"0xfa298BDF0BDFfFD2Dd9Fa605EED8D920f778EC7b",
+            contractAddr:"0xa8618B875a26da5CD11C6c7969BE46259b96fC1E",
             decimals:6
         },{
             symbol:"OP-ERC20",
